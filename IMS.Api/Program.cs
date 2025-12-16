@@ -1,9 +1,12 @@
+using IMS.Infrastructure.ServiceContainer;
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.addInfraDependancy(builder.Configuration);
 
 var app = builder.Build();
 
