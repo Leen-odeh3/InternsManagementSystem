@@ -9,6 +9,7 @@ public static class ErrorMessages
 
     public const string UserNotFound =
         "User not found.";
+    public const string UserAlreadyCreated = "User Already created, please change email! ";
 
     public const string RoleNotFound =
         "Role not found.";
@@ -18,6 +19,9 @@ public static class ErrorMessages
 
     public const string InvalidCredentials =
         "Invalid username or password.";
+
+    public const string InvalidRole =
+        "Invalid Role, try again please.";
 
     public const string MigrationFailed = "Database migration failed";
 

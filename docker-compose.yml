@@ -1,0 +1,25 @@
+services:
+  ims.api:
+    build:
+      context: .
+      dockerfile: IMS.Api/Dockerfile
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Strong@123"
+    ports:
+      - "1433:1433"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"

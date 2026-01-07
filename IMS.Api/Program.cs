@@ -1,22 +1,33 @@
+using IMS.Application.DI;
+using IMS.Infrastructure.Database;
 using IMS.Infrastructure.DbInitilizer;
 using IMS.Infrastructure.ServiceContainer;
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.addInfraDependancy(builder.Configuration);
+builder.Services.addInfraDependancy(builder.Configuration).AddApplicationDependancy();
+
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitilizer>();
-    await dbInitializer.Initialize();
+    try
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitilizer>();
+        await dbInitializer.Initialize();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("DB init failed:");
+        Console.WriteLine(ex.ToString());
+    }
 }
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -24,10 +35,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
