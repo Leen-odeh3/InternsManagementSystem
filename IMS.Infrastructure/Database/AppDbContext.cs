@@ -11,17 +11,15 @@ namespace IMS.Infrastructure.Database;
 
 public class AppDbContext : IdentityDbContext<AppUser,AppRole,int>, IAppDbContext
 {
-    public DbSet<Trainee> Trainees => throw new NotImplementedException();
+    public DbSet<Trainee> Trainees { get; set; }
 
-    public DbSet<Trainer> Trainers => throw new NotImplementedException();
+    public DbSet<Trainer> Trainers { get; set; }
+    public DbSet<Manager> Managers { get; set; }
 
-    public DbSet<Manager> Managers => throw new NotImplementedException();
+    public DbSet<Hr> Hrs { get; set; }
 
-    public DbSet<Hr> Hrs => throw new NotImplementedException();
-
-    public DbSet<Admin> Admins => throw new NotImplementedException();
-
-    public DbSet<TeamLead> TeamLeads => throw new NotImplementedException();
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<TeamLead> TeamLeads { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
     {

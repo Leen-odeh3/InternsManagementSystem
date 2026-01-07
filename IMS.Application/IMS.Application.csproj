@@ -11,12 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validations\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Riok.Mapperly" />
+	  <PackageReference Include="Riok.Mapperly" />
   </ItemGroup>
 
 </Project>

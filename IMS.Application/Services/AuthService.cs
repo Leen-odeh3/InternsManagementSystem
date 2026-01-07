@@ -89,7 +89,9 @@ public class AuthService : IAuthService
                 throw new BadRequestException(ErrorMessages.InvalidRole);
         }
         await _context.SaveChangesAsync();
-
-        return _mapper.ToResponse(appUser);
+        var res = _mapper.ToResponse(appUser);
+        res.UserId = appUser.Id;
+        res.Role = user.role;
+        return res;
     }
 }

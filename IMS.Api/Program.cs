@@ -1,11 +1,13 @@
 using IMS.Application.DI;
-using IMS.Infrastructure.Database;
+using FluentValidation.AspNetCore;
 using IMS.Infrastructure.DbInitilizer;
 using IMS.Infrastructure.ServiceContainer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

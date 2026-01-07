@@ -21,12 +21,19 @@ public static class ServiceContainer
         services.AddScoped<IAppDbContext>(sp =>
     sp.GetRequiredService<AppDbContext>());
 
-        services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders();
-
         services.AddScoped<IDBInitilizer, DBInitilizer>();
 
-
+        services.AddIdentity<AppUser, AppRole>(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 3;
+            options.Password.RequiredUniqueChars = 0;
+        })
+        .AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
+        ;
         return services;
     }
 }

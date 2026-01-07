@@ -1,17 +1,22 @@
-﻿using IMS.Application.Abstractions;
+﻿using FluentValidation;
+using IMS.Application.Abstractions;
 using IMS.Application.Mapper;
 using IMS.Application.Services;
+using IMS.Application.Validations;
+using IMS.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IMS.Application.DI;
 public static class addApplicationDependancy
 {
-    public static IServiceCollection AddApplicationDependancy(this IServiceCollection service)
+    public static IServiceCollection AddApplicationDependancy(this IServiceCollection services)
     {
-        service.AddSingleton<UserMapper>();
-        service.AddScoped<IAuthService, AuthService>();
+        services.AddSingleton<UserMapper>();
+        services.AddScoped<IAuthService, AuthService>();
 
-        return service;
-
+        services.AddValidatorsFromAssembly(typeof(AppUserValidator).Assembly);
+   
+        return services;
     }
 }
