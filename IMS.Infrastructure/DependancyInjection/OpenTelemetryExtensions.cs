@@ -12,19 +12,20 @@ public static class OpenTelemetryExtensions
         IConfiguration configuration)
     {
         services.AddOpenTelemetry()
-            .WithTracing(builder =>
+    .WithTracing(builder =>
+    {
+        builder
+            .SetResourceBuilder(
+                ResourceBuilder.CreateDefault()
+                    .AddService("IMS.API")).AddSource("IMS.API")
+            .SetSampler(new AlwaysOnSampler())
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddOtlpExporter(o =>
             {
-                builder
-                    .SetResourceBuilder(
-                        ResourceBuilder.CreateDefault()
-                            .AddService("IMS.API"))
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddOtlpExporter(o =>
-                    {
-                        o.Endpoint = new Uri(configuration["Otlp:Endpoint"]);
-                    });
+                o.Endpoint = new Uri(configuration["Otlp:Endpoint"]);
             });
+    });
 
         return services;
     }

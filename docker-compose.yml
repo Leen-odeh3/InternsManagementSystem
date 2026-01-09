@@ -5,7 +5,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Strong@123"
+      SA_PASSWORD: "Leen@123"
     ports:
       - "1433:1433"
     healthcheck:
@@ -20,19 +20,44 @@ services:
       dockerfile: IMS.Api/Dockerfile
     ports:
       - "5000:8080"
+    healthcheck:
+     test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+     interval: 10s
+     timeout: 5s
+     retries: 5
     depends_on:
       sqlserver:
         condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      Otlp__Endpoint: http://jaeger:4317
       ConnectionStrings__DefaultConnection: >
-        Server=sqlserver,1433;
+       Server=sqlserver,1433;
         Database=IMS_DB;
-        User Id=sa;
-        Password=Strong@123;
-        TrustServerCertificate=True;
+       User Id=sa;
+       Password=Leen@123;
+       TrustServerCertificate=True;
 
   redis:
     image: redis:7
     ports:
       - "6379:6379"
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+    - "9090:9090"
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+    - ims.api
+
+  jaeger:
+   image: jaegertracing/all-in-one:1.54
+   ports:
+    - "16686:16686"   # UI
+    - "4317:4317"     # OTLP gRPC
+   
+
+

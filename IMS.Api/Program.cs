@@ -1,6 +1,7 @@
+using IMS.Application.DI;
 using IMS.Infrastructure.DependancyInjection;
 using IMS.Infrastructure.ServiceContainer;
-using IMS.Application.DI;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .addInfraDependancy(builder.Configuration)
     .AddApplicationDependancy();
+builder.Services.AddObservability(builder.Configuration);
 
 var app = builder.Build();
 app.UseObservability(); 

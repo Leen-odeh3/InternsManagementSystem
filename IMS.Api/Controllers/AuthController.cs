@@ -1,5 +1,7 @@
 ﻿using IMS.Application.Abstractions;
+using IMS.Application.DI;
 using IMS.Application.DTOs.Users;
+using IMS.Infrastructure.DependancyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +20,17 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] AppUserRequest userRequest)
     {
+        using var activity =
+            Observability.ActivitySource.StartActivity("Register User");
+
+        activity?.SetTag("user.email", userRequest.Email);
+        activity?.SetTag("user.role", userRequest.role);
+
         var result = await _authService.AddNewUserAsync(userRequest);
-        return CreatedAtAction(nameof(Register), new { id = result.UserId }, result);
+
+        activity?.SetTag("user.id", result.UserId);
+
+        return CreatedAtAction(nameof(Register),
+            new { id = result.UserId }, result);
     }
 }
