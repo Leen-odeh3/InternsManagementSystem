@@ -3,6 +3,7 @@ using IMS.Application.Abstractions;
 using IMS.Core.Entities;
 using IMS.Infrastructure.Database;
 using IMS.Infrastructure.DbInitilizer;
+using IMS.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,7 @@ public static class ServiceContainer
         configuration.GetConnectionString("DefaultConnection"),
         tags: new[] { "db", "ready" }
     );
-
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }

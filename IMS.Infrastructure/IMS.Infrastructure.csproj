@@ -26,9 +26,6 @@
 	</ItemGroup>
 
 	<!-- Folders -->
-	<ItemGroup>
-		<Folder Include="Repositories\" />
-	</ItemGroup>
 
 	<!-- Project References -->
 	<ItemGroup>
