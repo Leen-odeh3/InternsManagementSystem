@@ -1,7 +1,7 @@
+using IMS.Api.DI;
 using IMS.Application.DI;
 using IMS.Infrastructure.DependancyInjection;
 using IMS.Infrastructure.ServiceContainer;
-using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +17,9 @@ builder.Services
 builder.Services.AddObservability(builder.Configuration);
 
 var app = builder.Build();
-app.UseObservability(); 
-app.MapObservabilityEndpoints();
+app.UseObservability();
+app.MapMetrics();
+app.MapHealthChecks();
 
 await app.InitializeDatabaseAsync();
 

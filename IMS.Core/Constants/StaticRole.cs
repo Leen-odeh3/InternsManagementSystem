@@ -3,12 +3,12 @@
 namespace IMS.Core.Constants;
 public static class StaticRole
 {
-    public static string Admin => "Admin";
-    public static string Trainer => "Trainer";
-    public static string Trainee => "Trainee";
-    public static string Hr => "Hr";
-    public static string Manager => "Manager";
-    public static string TeamLead => "TeamLead";
-    public static string SuperAdmin => "SuperAdmin";
-
+    public const string Admin = nameof(Admin);
+    public const string Trainer = nameof(Trainer);
+    public const string Trainee = nameof(Trainee);
+    public const string Hr = nameof(Hr);
+    public const string Manager = nameof(Manager);
+    public const string TeamLead = nameof(TeamLead);
+    public const string SuperAdmin = nameof(SuperAdmin);
 }
+

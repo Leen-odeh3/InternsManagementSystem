@@ -62,8 +62,8 @@ public class DBInitilizer : IDBInitilizer
             FirstName = "Super",
             LastName = "Admin",
             ProfilePictureUrl = "default.png",
-            specialization = "System",
-            university = "Internal",
+            Specialization = "System",
+            University = "Internal",
             IsActive = true,
             EmailConfirmed = true
         };

@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
             Observability.ActivitySource.StartActivity("Register User");
 
         activity?.SetTag("user.email", userRequest.Email);
-        activity?.SetTag("user.role", userRequest.role);
+        activity?.SetTag("user.role", userRequest.Role);
 
         var result = await _authService.AddNewUserAsync(userRequest);
 

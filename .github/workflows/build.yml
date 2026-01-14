@@ -1,10 +1,9 @@
-
 name: Build
 
 on:
   push:
     branches:
-      - "**"
+      - main
   pull_request:
     branches:
       - "**"
@@ -27,3 +26,6 @@ jobs:
 
       - name: Build
         run: dotnet build InternsManagementSystem.sln --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test InternsManagementSystem.sln --no-build --configuration Release

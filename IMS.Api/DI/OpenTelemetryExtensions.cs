@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-
-namespace IMS.Infrastructure.DependancyInjection;
-
+namespace IMS.Api.DI;
 public static class OpenTelemetryExtensions
 {
     public static IServiceCollection AddObservability(

@@ -10,9 +10,9 @@ public class AppUserRequest
     public string LastName { get; set; }
     public bool IsActive { get; set; } = false;
     public string ProfilePictureUrl { get; set; }
-    public string specialization { get; set; }
-    public string university { get; set; }
-    public string role { get; set; }
+    public string Specialization { get; set; }
+    public string University { get; set; }
+    public string Role { get; set; }
     public string Password { get; set; }
     public int? GraduationYear { get; set; }
     public string? GitHubUsername { get; set; }

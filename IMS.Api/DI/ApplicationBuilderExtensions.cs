@@ -1,9 +1,7 @@
 ﻿
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Prometheus;
 
-namespace IMS.Infrastructure.DependancyInjection;
+namespace IMS.Api.DI;
 
 public static class ApplicationBuilderExtensions
 {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace IMS.Infrastructure.DependancyInjection;
+namespace IMS.Api.DI;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -8,11 +8,9 @@ using Prometheus;
 
 public static class EndpointExtensions
 {
-    public static void MapObservabilityEndpoints(
+    public static void MapHealthChecks(
         this WebApplication app)
     {
-        app.MapMetrics("/metrics");
-
         app.MapHealthChecks("/health/live");
         app.MapHealthChecks("/health/ready", new HealthCheckOptions
         {

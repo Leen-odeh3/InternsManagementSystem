@@ -2,6 +2,7 @@
 using IMS.Application.DI;
 using IMS.Application.DTOs.Users;
 using IMS.Application.Mapper;
+using IMS.Core.Constants;
 using IMS.Core.Entities;
 using IMS.Core.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,7 @@ public class AuthService : IAuthService
         await _unitOfWork.BeginTransactionAsync();
 
         activity?.SetTag("user.email", user.Email);
-        activity?.SetTag("user.role", user.role);
+        activity?.SetTag("user.role", user.Role);
 
         var isExist = await _userManager.FindByEmailAsync(user.Email);
         if (isExist != null)
@@ -48,8 +49,8 @@ public class AuthService : IAuthService
         try
         {
             var appUser = _mapper.ToEntity(user);
-            appUser.specialization = user.specialization;
-            appUser.university = user.university;
+            appUser.Specialization = user.Specialization;
+            appUser.University = user.University;
 
             var result = await _userManager.CreateAsync(appUser, user.Password);
             if (!result.Succeeded)
@@ -64,15 +65,15 @@ public class AuthService : IAuthService
             using (var roleActivity =
                    Observability.ActivitySource.StartActivity("Assign User Role"))
             {
-                roleActivity?.SetTag("role", user.role);
+                roleActivity?.SetTag("role", user.Role);
 
-                switch (user.role.ToLower())
+                switch (user.Role?.Trim())
                 {
-                    case "manager":
+                    case StaticRole.Manager:
                         await _userManager.AddToRoleAsync(appUser, "Manager");
                         break;
 
-                    case "trainer":
+                    case StaticRole.Trainer:
                         await _userManager.AddToRoleAsync(appUser, "Trainer");
                         _context.Trainers.Add(new Trainer
                         {
@@ -81,7 +82,7 @@ public class AuthService : IAuthService
                         });
                         break;
 
-                    case "trainee":
+                    case StaticRole.Trainee:
                         await _userManager.AddToRoleAsync(appUser, "Trainee");
                         _context.Trainees.Add(new Trainee
                         {
@@ -93,7 +94,7 @@ public class AuthService : IAuthService
                         });
                         break;
 
-                    case "teamlead":
+                    case StaticRole.TeamLead:
                         await _userManager.AddToRoleAsync(appUser, "TeamLead");
                         _context.TeamLeads.Add(new TeamLead
                         {
@@ -101,7 +102,7 @@ public class AuthService : IAuthService
                         });
                         break;
 
-                    case "admin":
+                    case StaticRole.Admin:
                         await _userManager.AddToRoleAsync(appUser, "Admin");
                         _context.Admins.Add(new Admin
                         {
@@ -120,7 +121,7 @@ public class AuthService : IAuthService
 
             var res = _mapper.ToResponse(appUser);
             res.UserId = appUser.Id;
-            res.Role = user.role;
+            res.Role = user.Role;
 
         return res;
         }

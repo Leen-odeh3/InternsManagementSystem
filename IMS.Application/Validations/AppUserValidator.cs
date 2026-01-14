@@ -27,11 +27,11 @@ public class AppUserValidator
             .MaximumLength(10)
                 .WithMessage("Password must not exceed 10 characters");
 
-        RuleFor(x => x.role)
+        RuleFor(x => x.Role)
             .NotEmpty()
             .WithMessage("Role is required");
 
-        When(x => x.role != null && x.role.ToLower() == "trainee", () =>
+        When(x => x.Role != null && x.Role.ToLower() == "trainee", () =>
         {
             RuleFor(x => x.GraduationYear)
                 .NotNull()
