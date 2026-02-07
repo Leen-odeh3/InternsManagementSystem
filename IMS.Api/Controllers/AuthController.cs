@@ -1,6 +1,7 @@
 ﻿using IMS.Application.Abstractions;
 using IMS.Application.DTOs.Users;
 using IMS.Application.Mapper;
+using IMS.Core.Constants;
 using IMS.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,13 +28,13 @@ public class AuthController : ControllerBase
         Trainer? trainer = null;
         Trainee? trainee = null;
 
-        if (dto.Role == "Trainer")
+        if (string.Equals(dto.Role, StaticRole.Trainer, StringComparison.OrdinalIgnoreCase))
         {
             trainer = _mapper.MapToTrainer(dto);
             trainer.User = appUser;
         }
 
-        if (dto.Role == "Trainee")
+        if (string.Equals(dto.Role, StaticRole.Trainee, StringComparison.OrdinalIgnoreCase))
         {
             trainee = _mapper.MapToTrainee(dto);
             trainee.User = appUser;

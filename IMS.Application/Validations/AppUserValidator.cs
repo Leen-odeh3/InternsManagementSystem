@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using IMS.Application.DTOs.Users;
+using IMS.Core.Constants;
 
 namespace IMS.Application.Validations;
 public class AppUserValidator
@@ -31,13 +32,15 @@ public class AppUserValidator
             .NotEmpty()
             .WithMessage("Role is required");
 
-        When(x => x.Role != null && x.Role.ToLower() == "trainee", () =>
-        {
-            RuleFor(x => x.GraduationYear)
-                .NotNull()
-                    .WithMessage("Graduation year is required for trainees")
-                .InclusiveBetween(2024, DateTime.Now.Year)
-                    .WithMessage($"Graduation year must be between 2024 and {DateTime.Now.Year}");
-        });
+        When(x =>
+            string.Equals(x.Role, StaticRole.Trainee, StringComparison.OrdinalIgnoreCase),
+            () =>
+            {
+                RuleFor(x => x.GraduationYear)
+                    .NotNull()
+                        .WithMessage("Graduation year is required for trainees")
+                    .InclusiveBetween(2024, DateTime.Now.Year)
+                        .WithMessage($"Graduation year must be between 2024 and {DateTime.Now.Year}");
+            });
     }
 }
