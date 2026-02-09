@@ -13,6 +13,4 @@ public class AppUser : IdentityUser<int>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;  
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;  
     public DateTime LastLoginAt { get; set; } = DateTime.UtcNow;    
-    public Trainer? Trainer { get; set; }
-    public Trainee? Trainee { get; set; }    
 }

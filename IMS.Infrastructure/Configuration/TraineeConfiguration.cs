@@ -9,9 +9,9 @@ public class TraineeConfiguration : IEntityTypeConfiguration<Trainee>
     public void Configure(EntityTypeBuilder<Trainee> builder)
     {
         builder.ToTable("Trainees");
-        builder.HasKey(h => h.Id);
+        builder.HasKey(h => h.UserId);
         builder.HasOne(h => h.User)
-               .WithOne(u => u.Trainee)
-               .HasForeignKey<Trainee>(h => h.Id);
+               .WithOne()
+               .HasForeignKey<Trainee>(h => h.UserId);
     }
 }

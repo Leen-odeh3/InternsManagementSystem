@@ -6,8 +6,6 @@ using IMS.Infrastructure.ServiceContainer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.AddSerilogLogging();
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

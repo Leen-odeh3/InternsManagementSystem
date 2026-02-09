@@ -21,8 +21,7 @@ public class AppDbContext : IdentityDbContext<AppUser,AppRole,int>, IAppDbContex
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfiguration(new TrainerConfiguration());
-        builder.ApplyConfiguration(new TraineeConfiguration());
+        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

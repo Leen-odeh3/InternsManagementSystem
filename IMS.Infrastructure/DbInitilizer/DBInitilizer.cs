@@ -4,6 +4,7 @@ using IMS.Core.Exceptions;
 using IMS.Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace IMS.Infrastructure.DbInitilizer;
 
@@ -12,13 +13,18 @@ public class DBInitilizer : IDBInitilizer
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
     private readonly AppDbContext _context;
-    public DBInitilizer(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,AppDbContext context)
+    private readonly ILogger<DBInitilizer> _logger;
+    public DBInitilizer(
+     AppDbContext context,
+     RoleManager<AppRole> roleManager,
+     UserManager<AppUser> userManager,
+     ILogger<DBInitilizer> logger)
     {
+        _context = context;
         _roleManager = roleManager;
         _userManager = userManager;
-        _context = context;
+        _logger = logger;
     }
-
     public async Task Initialize()
     {
         try
@@ -28,11 +34,7 @@ public class DBInitilizer : IDBInitilizer
         }
         catch (Exception ex)
         {
-            Console.WriteLine("========== MIGRATION ERROR ==========");
-            Console.WriteLine(ex.ToString());
-            Console.WriteLine("=====================================");
-
-            throw;
+            _logger.LogError(ex, "Migration failed while initializing database");
         }
 
 

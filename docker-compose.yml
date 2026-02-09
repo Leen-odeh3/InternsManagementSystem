@@ -21,7 +21,7 @@ services:
     ports:
       - "5000:8080"
     healthcheck:
-     test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+     test: ["CMD", "wget", "--spider", "http://localhost:8080/health/ready"]
      interval: 10s
      timeout: 5s
      retries: 5
@@ -59,6 +59,24 @@ services:
    ports:
     - "16686:16686"   # UI
     - "4317:4317"     # OTLP gRPC
-   
+  
+  seq:
+   image: datalust/seq:latest
+   container_name: seq
+   ports:
+    - "5341:80"
+   environment:
+    ACCEPT_EULA: "Y"
+
+  otel-collector:
+   image: otel/opentelemetry-collector-contrib:latest
+   command: ["--config=/etc/otel-collector-config.yaml"]
+   volumes:
+    - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+   ports:
+    - "4317:4317"
+    - "4318:4318"
+
+
 
 

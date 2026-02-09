@@ -30,11 +30,6 @@ public class AuthService : IAuthService
     Trainer? trainer,
     Trainee? trainee)
     {
-        using var activity =
-            Observability.ActivitySource.StartActivity("AuthService.AddNewUser");
-
-        activity?.SetTag("user.email", appUser.Email);
-        activity?.SetTag("user.role", role);
 
         return await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
@@ -42,7 +37,6 @@ public class AuthService : IAuthService
 
             if (isExist != null)
             {
-                activity?.SetStatus(ActivityStatusCode.Error, "User already exists");
                 throw new BadRequestException(ErrorMessages.UserAlreadyCreated);
             }
 
@@ -50,8 +44,6 @@ public class AuthService : IAuthService
 
             if (!result.Succeeded)
             {
-                activity?.SetStatus(ActivityStatusCode.Error, "Identity creation failed");
-
                 throw new BadRequestException(
                     string.Join(",", result.Errors.Select(e => e.Description)));
             }
@@ -72,9 +64,8 @@ public class AuthService : IAuthService
 
                     if (trainer != null)
                     {
-                        trainer.Id = appUser.Id;
                         trainer.User = appUser;
-                        appUser.Trainer = trainer;
+                        //appUser.Trainer = trainer;
 
                         _context.Trainers.Add(trainer);
                     }
@@ -85,9 +76,8 @@ public class AuthService : IAuthService
 
                     if (trainee != null)
                     {
-                        trainee.Id = appUser.Id;
                         trainee.User = appUser;
-                        appUser.Trainee = trainee;
+                       // appUser.Trainee = trainee;
 
                         _context.Trainees.Add(trainee);
                     }
@@ -107,10 +97,6 @@ public class AuthService : IAuthService
             }
 
             await _context.SaveChangesAsync();
-
-            activity?.SetTag("db.saved", true);
-            activity?.SetStatus(ActivityStatusCode.Ok);
-
             return appUser;
         });
     }

@@ -27,7 +27,7 @@ public class ExceptionMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         var statusCode = HttpStatusCode.InternalServerError;
-        var message = "Something went wrong";
+        var message = ex.ToString();
 
         switch (ex)
         {

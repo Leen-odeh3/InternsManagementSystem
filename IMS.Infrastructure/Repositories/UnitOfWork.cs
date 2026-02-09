@@ -15,16 +15,17 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> action)
-    {
-        try
-        {
-            if (_context.Database.CurrentTransaction != null)
+    { 
+        if (_context.Database.CurrentTransaction != null)
             {
                 return await action();
             }
 
             await using var transaction =
                 await _context.Database.BeginTransactionAsync();
+        try
+        {
+           
 
             var result = await action();
 
