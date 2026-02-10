@@ -1,6 +1,7 @@
 ﻿
 using IMS.Application.Abstractions;
 using IMS.Core.Entities;
+using IMS.Core.Interfaces;
 using IMS.Infrastructure.Database;
 using IMS.Infrastructure.DbInitilizer;
 using IMS.Infrastructure.Repositories;
@@ -32,9 +33,6 @@ public static class ServiceContainer
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"));
         });
-
-        services.AddScoped<IAppDbContext>(sp =>
-            sp.GetRequiredService<AppDbContext>());
     }
     private static void AddIdentityServices(IServiceCollection services)
     {
@@ -65,5 +63,8 @@ public static class ServiceContainer
     {
         services.AddScoped<IDBInitilizer, DBInitilizer>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITrainerRepository, TrainerRepository>();
+        services.AddScoped<ITraineeRepository, TraineeRepository>();
+
     }
 }

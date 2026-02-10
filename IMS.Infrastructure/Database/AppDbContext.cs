@@ -1,15 +1,12 @@
 ﻿
-using IMS.Application.Abstractions;
 using IMS.Core.Entities;
-using IMS.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection.Emit;
+
 
 namespace IMS.Infrastructure.Database;
 
-public class AppDbContext : IdentityDbContext<AppUser,AppRole,int>, IAppDbContext
+public class AppDbContext : IdentityDbContext<AppUser,AppRole,int>
 {
     public DbSet<Trainee> Trainees { get; set; }
 

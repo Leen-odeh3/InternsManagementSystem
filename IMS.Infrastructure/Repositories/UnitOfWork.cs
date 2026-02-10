@@ -7,7 +7,6 @@ namespace IMS.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
-    private IDbContextTransaction? _transaction;
 
     public UnitOfWork(AppDbContext context)
     {
@@ -15,19 +14,18 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> action)
-    { 
+    {
         if (_context.Database.CurrentTransaction != null)
-            {
-                return await action();
-            }
+            return await action();
 
-            await using var transaction =
-                await _context.Database.BeginTransactionAsync();
+        await using var transaction =
+            await _context.Database.BeginTransactionAsync();
+
         try
         {
-           
-
             var result = await action();
+
+            await _context.SaveChangesAsync();
 
             await transaction.CommitAsync();
 
@@ -35,8 +33,9 @@ public class UnitOfWork : IUnitOfWork
         }
         catch
         {
-            await _context.Database.RollbackTransactionAsync();
+            await transaction.RollbackAsync();
             throw;
         }
     }
 }
+

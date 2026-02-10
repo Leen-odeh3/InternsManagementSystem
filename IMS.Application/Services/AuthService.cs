@@ -2,23 +2,26 @@
 using IMS.Core.Constants;
 using IMS.Core.Entities;
 using IMS.Core.Exceptions;
+using IMS.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace IMS.Application.Services;
 public class AuthService : IAuthService
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly IAppDbContext _context;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ITraineeRepository _traineeRepository;
+    private readonly ITrainerRepository _trainerRepository;
 
     public AuthService(
         UserManager<AppUser> userManager,
-        IAppDbContext context,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ITraineeRepository traineeRepository, ITrainerRepository trainerRepository)
     {
         _userManager = userManager;
-        _context = context;
         _unitOfWork = unitOfWork;
+        _traineeRepository = traineeRepository;
+        _trainerRepository = trainerRepository;
     }
 
     public async Task<AppUser> AddNewUserAsync(
@@ -58,7 +61,7 @@ public class AuthService : IAuthService
                     if (trainer != null)
                     {
                         trainer.UserId = appUser.Id;
-                        _context.Trainers.Add(trainer);
+                        await _trainerRepository.AddAsync(trainer);
                     }
                     break;
 
@@ -68,7 +71,7 @@ public class AuthService : IAuthService
                     if (trainee != null)
                     {
                         trainee.UserId = appUser.Id;
-                        _context.Trainees.Add(trainee);
+                        await _traineeRepository.AddAsync(trainee);
                     }
                     break;
 
@@ -84,7 +87,6 @@ public class AuthService : IAuthService
                     throw new BadRequestException(ErrorMessages.InvalidRole);
             }
 
-            await _context.SaveChangesAsync();
             return appUser;
         });
     }
