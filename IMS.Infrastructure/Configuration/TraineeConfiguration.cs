@@ -9,9 +9,11 @@ public class TraineeConfiguration : IEntityTypeConfiguration<Trainee>
     public void Configure(EntityTypeBuilder<Trainee> builder)
     {
         builder.ToTable("Trainees");
-        builder.HasKey(h => h.UserId);
-        builder.HasOne(h => h.User)
+        builder.HasKey(t => t.UserId);
+        builder.HasOne<AppUser>()
                .WithOne()
-               .HasForeignKey<Trainee>(h => h.UserId);
+               .HasForeignKey<Trainee>(t => t.UserId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

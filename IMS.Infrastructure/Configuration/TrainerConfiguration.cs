@@ -10,9 +10,11 @@ public class TrainerConfiguration : IEntityTypeConfiguration<Trainer>
     public void Configure(EntityTypeBuilder<Trainer> builder)
     {
         builder.ToTable("Trainers");
-        builder.HasKey(h => h.UserId);
-        builder.HasOne(h => h.User)
+        builder.HasKey(t => t.UserId);
+        builder.HasOne<AppUser>()
                .WithOne()
-               .HasForeignKey<Trainer>(h => h.UserId);
+               .HasForeignKey<Trainer>(t => t.UserId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

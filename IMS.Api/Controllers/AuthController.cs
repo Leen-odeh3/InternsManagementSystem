@@ -4,6 +4,7 @@ using IMS.Application.Mapper;
 using IMS.Core.Constants;
 using IMS.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace IMS.Api.Controllers;
 
@@ -37,13 +38,13 @@ public class AuthController : ControllerBase
         if (string.Equals(dto.Role, StaticRole.Trainer, StringComparison.OrdinalIgnoreCase))
         {
             trainer = _mapper.MapToTrainer(dto);
-            trainer.User = appUser;
+            trainer.UserId = appUser.Id;
         }
 
         if (string.Equals(dto.Role, StaticRole.Trainee, StringComparison.OrdinalIgnoreCase))
         {
             trainee = _mapper.MapToTrainee(dto);
-            trainee.User = appUser;
+            trainee.UserId = appUser.Id;
         }
 
         var user = await _authService.AddNewUserAsync(

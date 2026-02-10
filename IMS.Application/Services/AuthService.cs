@@ -1,10 +1,8 @@
 ﻿using IMS.Application.Abstractions;
-using IMS.Application.DI;
 using IMS.Core.Constants;
 using IMS.Core.Entities;
 using IMS.Core.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using System.Diagnostics;
 
 namespace IMS.Application.Services;
 public class AuthService : IAuthService
@@ -48,11 +46,6 @@ public class AuthService : IAuthService
                     string.Join(",", result.Errors.Select(e => e.Description)));
             }
 
-            using var roleActivity =
-                Observability.ActivitySource.StartActivity("AssignUserRole");
-
-            roleActivity?.SetTag("role", role);
-
             switch (role?.Trim())
             {
                 case StaticRole.Manager:
@@ -64,9 +57,7 @@ public class AuthService : IAuthService
 
                     if (trainer != null)
                     {
-                        trainer.User = appUser;
-                        //appUser.Trainer = trainer;
-
+                        trainer.UserId = appUser.Id;
                         _context.Trainers.Add(trainer);
                     }
                     break;
@@ -76,9 +67,7 @@ public class AuthService : IAuthService
 
                     if (trainee != null)
                     {
-                        trainee.User = appUser;
-                       // appUser.Trainee = trainee;
-
+                        trainee.UserId = appUser.Id;
                         _context.Trainees.Add(trainee);
                     }
                     break;
@@ -92,7 +81,6 @@ public class AuthService : IAuthService
                     break;
 
                 default:
-                    roleActivity?.SetStatus(ActivityStatusCode.Error, "Invalid role");
                     throw new BadRequestException(ErrorMessages.InvalidRole);
             }
 
