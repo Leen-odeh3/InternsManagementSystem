@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
-    [Authorize(Roles = StaticRole.SuperAdmin)]
+    [Authorize(Roles = StaticRole.SuperAdmin + "," + StaticRole.Admin)]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
     {

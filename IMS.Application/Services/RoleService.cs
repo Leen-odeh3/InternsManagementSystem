@@ -24,8 +24,8 @@ public class RoleService : IRoleService
         var result = await _userManager.AddToRoleAsync(user, normalizedRole);
 
         if (!result.Succeeded)
-            throw new BadRequestException(
-                string.Join(",", result.Errors.Select(e => e.Description)));
+            throw new BadRequestException(result.Errors.Select(e => e.Description));
+
     }
 
 }

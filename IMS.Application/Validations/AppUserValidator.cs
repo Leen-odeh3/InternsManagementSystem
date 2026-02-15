@@ -6,6 +6,8 @@ namespace IMS.Application.Validations;
 public class AppUserValidator
     : AbstractValidator<RegisterUserDto>
 {
+    private const int MinPasswordLength = 6;
+    private const int MaxPasswordLength = 10;
     public AppUserValidator()
     {
         RuleFor(x => x.UserName)
@@ -20,13 +22,13 @@ public class AppUserValidator
             .Must(email => email.EndsWith("@quizplus.com"))
                 .WithMessage("Email must be a company email (@quizplus.com)");
 
-        RuleFor(x => x.Password)
-            .NotEmpty()
-                .WithMessage("Password is required")
-            .MinimumLength(6)
-                .WithMessage("Password must be at least 3 characters")
-            .MaximumLength(10)
-                .WithMessage("Password must not exceed 10 characters");
+        RuleFor(x => x.Password).NotEmpty()
+         .WithMessage("Password is required")
+     .MinimumLength(MinPasswordLength)
+         .WithMessage($"Password must be at least {MinPasswordLength} characters")
+     .MaximumLength(MaxPasswordLength)
+         .WithMessage($"Password must not exceed {MaxPasswordLength} characters");
+
 
         RuleFor(x => x.Role)
             .NotEmpty()

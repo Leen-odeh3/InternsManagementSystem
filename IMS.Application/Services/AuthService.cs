@@ -51,9 +51,7 @@ public class AuthService : IAuthService
 
             var result = await _userManager.CreateAsync(appUser, dto.Password);
             if (!result.Succeeded)
-                throw new BadRequestException(
-                    string.Join(",", result.Errors.Select(e => e.Description))
-                );
+                throw new BadRequestException(result.Errors.Select(e => e.Description));
 
             await _roleService.AssignRoleAsync(appUser, dto.Role);
             var handler = _roleHandlers
